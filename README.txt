@@ -35,3 +35,17 @@ LATEST UPDATE
 The Take a breath section now features a shoreline sunrise image of a fresh
 beginning. Nashay’s digital business card has a larger, clearer contact panel.
 
+
+BACKGROUND MUSIC
+Optional calming music is off when the page opens. It loads only after a
+visitor selects "Play calming music", fades in quietly, fades out on pause,
+pauses when the tab is hidden, and has a volume slider.
+- File: assets/audio/calm-piano-avec-soin.mp3 (about 2:16 seamless loop, 2.4 MB)
+- Music: "Avec Soin" by Kevin MacLeod (incompetech.com)
+  Licensed under Creative Commons: By Attribution 4.0
+  https://creativecommons.org/licenses/by/4.0/
+- Changes made: silence trimmed, final chord overlapped with the opening
+  for a seamless loop, level adjusted. One second of wrap-around audio sits
+  on each side of the loop; script.js loops from 1 s to 136.884082 s.
+- The credit must stay visible on the site (it is in the footer). To use
+  the music without the on-site credit, buy a license from incompetech.com.
