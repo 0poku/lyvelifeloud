@@ -1,27 +1,43 @@
 'use strict';
 
-// Surviving to Thriving workbook: autosave answers in this browser and send to Formspree via AJAX.
-// Without JavaScript the form still posts to Formspree directly.
+// Surviving to Thriving workbook: open the online version on request, autosave answers on this device,
+// and send them to Formspree via AJAX. Without JavaScript everything shows and the form posts directly.
+const root = document.documentElement;
 const form = document.getElementById('workbook-form');
+const online = document.getElementById('online-workbook');
+const openBtn = document.getElementById('open-online');
 const statusEl = document.getElementById('form-status');
 const saveStatus = document.getElementById('save-status');
 const submitBtn = document.getElementById('submit-btn');
 form.noValidate = true;
 const STORAGE_KEY = 'lll-workbook-v1';
+const OPEN_KEY = 'lll-workbook-open';
 const fields = Array.from(form.querySelectorAll('textarea, input[type=text]:not([name=_gotcha]), input[type=email]'));
 
 function readStore() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
 }
 
+let quietTimer;
+function showSaveStatus(message, warning = false) {
+  saveStatus.textContent = message;
+  saveStatus.classList.toggle('is-warning', warning);
+  saveStatus.classList.remove('is-quiet');
+  clearTimeout(quietTimer);
+  if (!warning) quietTimer = setTimeout(() => saveStatus.classList.add('is-quiet'), 2500);
+}
+
+let dirty = false;
 function writeStore() {
+  if (!dirty) return;
   const data = {};
   fields.forEach(field => { if (field.value) data[field.id] = field.value; });
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    saveStatus.textContent = 'Saved in this browser · ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    dirty = false;
+    showSaveStatus('✓ Saved · ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
   } catch {
-    saveStatus.textContent = 'Autosave is unavailable in this browser.';
+    showSaveStatus('Autosave is off in this browser — download or print to keep your answers', true);
   }
 }
 
@@ -31,28 +47,55 @@ function autosize(textarea) {
 }
 
 const saved = readStore();
-fields.forEach(field => {
-  if (saved[field.id]) field.value = saved[field.id];
-  if (field.tagName === 'TEXTAREA') autosize(field);
-});
-if (Object.keys(saved).length) saveStatus.textContent = 'Welcome back — your answers were restored.';
+fields.forEach(field => { if (saved[field.id]) field.value = saved[field.id]; });
+const hasSaved = Object.keys(saved).length > 0;
+
+function sizeAll() { form.querySelectorAll('textarea').forEach(autosize); }
+
+function setOpen(open, scroll) {
+  root.classList.toggle('wb-is-open', open);
+  openBtn.setAttribute('aria-expanded', String(open));
+  openBtn.textContent = open ? 'Filling it out online ↓' : 'Fill it out online instead';
+  if (!open) return;
+  try { localStorage.setItem(OPEN_KEY, '1'); } catch {}
+  // Ask the browser not to clear this site's storage when space runs low.
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  sizeAll();
+  if (scroll) {
+    online.focus({ preventScroll: true });
+    online.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Reopen automatically after a refresh, or whenever answers already exist.
+if (root.classList.contains('wb-is-open') || hasSaved) setOpen(true, false);
+if (hasSaved) showSaveStatus('Welcome back — your answers were restored');
+
+openBtn.addEventListener('click', () => setOpen(true, true));
 
 let saveTimer;
 form.addEventListener('input', event => {
   if (event.target.tagName === 'TEXTAREA') autosize(event.target);
   if (event.target.getAttribute('aria-invalid')) showError(event.target, '');
+  dirty = true;
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(writeStore, 400);
+  saveTimer = setTimeout(writeStore, 250);
 });
+// Save immediately whenever the page might go away: leaving a field, switching apps, locking the phone, closing the tab.
+form.addEventListener('change', writeStore);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') writeStore(); });
+window.addEventListener('pagehide', writeStore);
+window.addEventListener('beforeunload', writeStore);
 
-window.addEventListener('beforeprint', () => form.querySelectorAll('textarea').forEach(autosize));
+window.addEventListener('beforeprint', sizeAll);
 document.getElementById('print-btn').addEventListener('click', () => window.print());
 
 document.getElementById('clear-btn').addEventListener('click', () => {
   if (!window.confirm('Clear every answer in this workbook? This cannot be undone.')) return;
   fields.forEach(field => { field.value = ''; if (field.tagName === 'TEXTAREA') autosize(field); });
   try { localStorage.removeItem(STORAGE_KEY); } catch {}
-  saveStatus.textContent = 'Your answers were cleared.';
+  dirty = false;
+  showSaveStatus('Your answers were cleared');
   setStatus('', '');
 });
 
