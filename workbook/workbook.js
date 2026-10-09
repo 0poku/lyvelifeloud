@@ -87,6 +87,115 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 window.addEventListener('pagehide', writeStore);
 window.addEventListener('beforeunload', writeStore);
 
+// "Email me a link": answers are compressed into the link's #fragment (never sent to any server),
+// so the workbook can be picked up on another device with nothing but static hosting.
+const resumeStatus = document.getElementById('resume-status');
+const resumeEmail = document.getElementById('resume-email');
+const shareBtn = document.getElementById('resume-share-btn');
+
+function setResumeStatus(message, kind) {
+  resumeStatus.textContent = message;
+  resumeStatus.className = 'wb-status' + (kind ? ' is-' + kind : '');
+}
+
+function toBase64Url(bytes) {
+  let binary = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function fromBase64Url(text) {
+  const binary = atob(text.replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from(binary, char => char.charCodeAt(0));
+}
+
+async function packAnswers() {
+  const data = {};
+  fields.forEach(field => { if (field.value.trim()) data[field.id] = field.value; });
+  const bytes = new TextEncoder().encode(JSON.stringify(data));
+  if ('CompressionStream' in window) {
+    const stream = new Blob([bytes]).stream().pipeThrough(new CompressionStream('deflate-raw'));
+    return 'z' + toBase64Url(new Uint8Array(await new Response(stream).arrayBuffer()));
+  }
+  return 'j' + toBase64Url(bytes);
+}
+
+async function unpackAnswers(code) {
+  let bytes = fromBase64Url(code.slice(1));
+  if (code[0] === 'z') {
+    const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    bytes = new Uint8Array(await new Response(stream).arrayBuffer());
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+async function buildLink() {
+  return location.origin + location.pathname + '#a=' + await packAnswers();
+}
+
+function hasAnswers() {
+  return fields.some(field => field.value.trim());
+}
+
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch { return false; }
+}
+
+document.getElementById('resume-email-btn').addEventListener('click', async () => {
+  if (!hasAnswers()) { setResumeStatus('Add a few answers first — then send yourself the link.', 'error'); return; }
+  const to = resumeEmail.value.trim();
+  if (to && !resumeEmail.checkValidity()) { setResumeStatus('That email address doesn’t look quite right.', 'error'); resumeEmail.focus(); return; }
+  writeStore();
+  const link = await buildLink();
+  const copied = await copyText(link);
+  const body = 'Here is my Surviving to Thriving workbook. Open this link on any phone or computer to pick up where I left off:\n\n' + link + '\n\nLive Lyfe Loud';
+  window.location.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent('My Surviving to Thriving workbook') + '&body=' + encodeURIComponent(body);
+  setResumeStatus('Your email app should open with the link ready — just press send.' + (copied ? ' We also copied the link, so you can paste it if the email doesn’t open or the link looks cut off.' : ''), 'success');
+});
+
+document.getElementById('resume-copy-btn').addEventListener('click', async () => {
+  if (!hasAnswers()) { setResumeStatus('Add a few answers first — then copy your link.', 'error'); return; }
+  writeStore();
+  const link = await buildLink();
+  if (await copyText(link)) setResumeStatus('Link copied. Paste it into an email, text, or note to yourself.', 'success');
+  else window.prompt('Copy your workbook link:', link);
+});
+
+if (navigator.share) {
+  shareBtn.hidden = false;
+  shareBtn.addEventListener('click', async () => {
+    if (!hasAnswers()) { setResumeStatus('Add a few answers first — then share your link.', 'error'); return; }
+    writeStore();
+    try { await navigator.share({ title: 'My Surviving to Thriving workbook', url: await buildLink() }); } catch {}
+  });
+}
+
+const prefillEmail = () => { if (!resumeEmail.value && form.elements.email.value) resumeEmail.value = form.elements.email.value; };
+prefillEmail();
+form.elements.email.addEventListener('change', prefillEmail);
+
+// Opening a link: load its answers, save them on this device, then tidy the address bar.
+async function importFromLink() {
+  if (location.hash.indexOf('#a=') !== 0) return;
+  const code = location.hash.slice(3);
+  history.replaceState(null, '', location.pathname + location.search);
+  setOpen(true, false);
+  let data;
+  try { data = await unpackAnswers(code); } catch {
+    setResumeStatus('This workbook link couldn’t be opened. It may have been cut off — try copying the whole link again.', 'error');
+    document.getElementById('resume').scrollIntoView();
+    return;
+  }
+  if (hasAnswers() && !window.confirm('Load the answers from your link? This replaces the answers currently saved on this device.')) return;
+  fields.forEach(field => { field.value = data[field.id] || ''; });
+  sizeAll();
+  dirty = true;
+  writeStore();
+  showSaveStatus('Welcome back — your workbook was loaded from your link');
+  online.scrollIntoView({ block: 'start' });
+}
+importFromLink();
+
 window.addEventListener('beforeprint', sizeAll);
 document.getElementById('print-btn').addEventListener('click', () => window.print());
 

@@ -14,13 +14,13 @@
   <link rel="preload" as="image" href="assets/cover.webp" fetchpriority="high">
   <link rel="preload" as="font" href="../assets/fonts/serif-regular.woff" type="font/woff" crossorigin>
   <link rel="stylesheet" href="../silk.css?v=6">
-  <link rel="stylesheet" href="workbook.css?v=2">
+  <link rel="stylesheet" href="workbook.css?v=3">
   <script>
     // Hide the online workbook until it is opened; reopen it automatically if it was in use (e.g. after a refresh).
     document.documentElement.classList.add('js-enabled');
-    try { if (localStorage.getItem('lll-workbook-open') === '1') document.documentElement.classList.add('wb-is-open'); } catch {}
+    try { if (localStorage.getItem('lll-workbook-open') === '1' || location.hash.indexOf('#a=') === 0) document.documentElement.classList.add('wb-is-open'); } catch {}
   </script>
-  <script src="workbook.js?v=2" defer></script>
+  <script src="workbook.js?v=3" defer></script>
 </head>
 <body class="workbook-page">
   <div class="opening-art" aria-hidden="true"></div>
@@ -57,6 +57,7 @@
     <div class="wb-online" id="online-workbook" tabindex="-1" aria-label="Online workbook">
     <div class="wb-save-note wrap" role="note">
       <p><strong>Your words stay with you.</strong> Answers save on this device as you type — if your phone dies or the page refreshes, they’ll be right here when you come back on this same browser. Nothing is shared until you choose to send it.</p>
+      <p class="wb-save-switch">Switching devices? <a href="#resume">Email yourself a link</a></p>
     </div>
     <p class="wb-save-pill" id="save-status" aria-live="polite"></p>
 
@@ -335,6 +336,23 @@
         </div>
       </section>
     </form>
+
+    <section class="wb-resume wrap" id="resume" aria-labelledby="resume-title">
+      <div class="wb-card">
+        <p class="wb-kicker">SWITCHING DEVICES?</p>
+        <h2 id="resume-title" class="wb-card-title">Email yourself a link</h2>
+        <p class="wb-resume-copy">Get a link that holds your answers so far. Open it on any phone or computer to pick up right where you left off. Added more since? Just send yourself a fresh link.</p>
+        <div class="wb-resume-row">
+          <div class="wb-field"><label for="resume-email">Send the link to</label><input id="resume-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+          <button class="button button-pink" type="button" id="resume-email-btn">Email me my link</button>
+        </div>
+        <div class="wb-resume-alt">
+          <button class="text-link wb-print" type="button" id="resume-copy-btn">Copy my link</button>
+          <button class="text-link wb-print" type="button" id="resume-share-btn" hidden>Share my link…</button>
+        </div>
+        <p class="wb-status" id="resume-status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
     </div>
   </main>
 
