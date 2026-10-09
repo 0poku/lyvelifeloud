@@ -1,0 +1,135 @@
+/* Surviving to Thriving workbook — builds on ../silk.css tokens */
+.wb-home-link{font-size:.875rem;padding:10px 22px;border:1px solid #a784725c;border-radius:50px;transition:background .3s,border-color .3s}
+.wb-home-link:hover{background:#fffaf8b3;border-color:var(--gold)}
+
+.wb-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:center;padding-top:30px;padding-bottom:70px}
+.wb-hero h1{font-size:clamp(3.4rem,6vw,5.4rem);letter-spacing:-.035em;line-height:1.08;margin-top:26px}
+.wb-hero h1 em{color:var(--raspberry)}
+.wb-subtitle{font-family:var(--serif);font-style:italic;font-size:1.6rem;color:#72535e;margin-top:14px}
+.wb-intro{color:var(--muted);margin-top:22px;max-width:520px}
+.wb-framework{margin-top:30px;padding:22px 0;border-top:1px solid #dac5bd;border-bottom:1px solid #dac5bd;max-width:520px}
+.wb-framework>span,.wb-kicker,.wb-small-label{font-size:.75rem;letter-spacing:.16em;color:#866b76}
+.wb-framework p{margin-top:8px;font-size:.95rem}
+.wb-framework b{color:var(--gold);font-weight:400;padding-inline:4px}
+.wb-hero .hero-actions{margin-top:30px}
+.wb-cover{margin:0;justify-self:end;max-width:400px;width:100%}
+.wb-cover img{width:100%;height:auto;border-radius:22px;box-shadow:0 20px 60px #8b536926}
+
+.wb-save-note{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 30px;padding:18px 26px;border:1px solid var(--line);border-radius:20px;background:#fffaf8cc;font-size:.9rem;color:var(--muted)}
+.wb-save-note strong{color:var(--ink);font-weight:400;font-family:var(--serif);font-style:italic;font-size:1.05rem}
+.wb-save-status{color:#806332;font-size:.8rem;letter-spacing:.04em}
+
+.wb-honeypot{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+.wb-chapter{padding-top:84px}
+.wb-chapter h2{font-size:clamp(2.3rem,3.6vw,3.2rem);line-height:1.16;letter-spacing:-.025em;margin-top:18px}
+.wb-chapter h2 em,.wb-send h2 em{color:var(--raspberry)}
+.wb-chapter h3{font-family:var(--serif);font-size:1.45rem;margin-top:26px;color:#592738}
+
+.wb-lesson{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.wb-lesson-copy>p:not(.eyebrow):not(.wb-pullquote):not(.wb-small-label):not(.wb-keymsg){color:var(--muted);margin-top:14px}
+.wb-lesson-pair .wb-lesson-copy+.wb-lesson-copy .eyebrow{visibility:hidden}
+.wb-slide{margin:0;position:sticky;top:30px}
+.wb-slide img{width:100%;height:auto;border-radius:18px;box-shadow:0 14px 40px #89646e1f}
+
+.wb-list{margin:14px 0 0;padding:0;list-style:none;color:var(--muted)}
+.wb-list li{position:relative;padding-left:22px;line-height:1.75;margin-top:4px}
+.wb-list li::before{content:'';position:absolute;left:2px;top:.8em;width:7px;height:7px;border-radius:50%;background:#e9b9c8}
+.wb-list-split{columns:2;column-gap:30px}
+.wb-columns{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.wb-columns p{color:var(--muted);margin-top:12px}
+.wb-small-label{margin-top:24px}
+.wb-pullquote{font-family:var(--serif);font-style:italic;font-size:1.5rem;color:var(--raspberry);margin-top:26px;line-height:1.5}
+.wb-pullquote span{color:#72535e;font-size:1.15rem}
+.wb-scripture{margin:30px 0 0;padding:22px 26px;border-left:2px solid var(--gold);background:#f8efed;border-radius:0 18px 18px 0;font-family:var(--serif);font-style:italic;font-size:1.2rem;line-height:1.7;color:#67515b}
+.wb-scripture span{display:block;font-family:var(--sans);font-style:normal;font-size:.75rem;letter-spacing:.14em;color:#806332;margin-bottom:8px}
+
+.wb-defs{margin:20px 0 0}
+.wb-defs>div{padding:13px 0;border-bottom:1px solid #e5d4cd}
+.wb-defs dt{font-family:var(--serif);font-size:1.25rem;color:#592738}
+.wb-defs dd{margin:2px 0 0;color:var(--muted)}
+.wb-keymsg{margin-top:22px;font-family:var(--serif);font-style:italic;font-size:1.25rem;color:#72535e;line-height:1.6}
+.wb-keymsg span{display:block;font-family:var(--sans);font-style:normal;font-size:.75rem;letter-spacing:.14em;color:#806332;margin-bottom:6px}
+
+.wb-process{text-align:center;max-width:900px;margin-inline:auto}
+.wb-process .eyebrow{justify-content:center}
+.wb-steps{list-style:none;margin:38px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:step}
+.wb-steps li{counter-increment:step;background:#2b2226;color:#f3e6e9;border-radius:20px;padding:26px 20px;font-size:.95rem;line-height:1.6;text-align:center}
+.wb-steps li::before{content:'0' counter(step);display:block;font-size:.75rem;letter-spacing:.14em;color:#d4b47c;margin-bottom:10px}
+.wb-steps strong{display:block;font-family:var(--serif);font-weight:400;font-size:1.45rem;color:#fff;margin-bottom:6px}
+
+.wb-closing{max-width:780px}
+.wb-closing>p:not(.eyebrow):not(.wb-pullquote){color:var(--muted);margin-top:18px}
+
+/* Reflection cards */
+.wb-card{margin-top:44px;padding:38px 42px 34px;background:#f8efed;border:1px solid #ecdcd6;border-radius:30px}
+.wb-card .wb-kicker{color:#a0294f;font-weight:700}
+.wb-card>h2,.wb-card-title{margin-top:10px}
+.wb-card-title{font-family:var(--serif);font-size:1.9rem!important;color:var(--ink)!important}
+.wb-question{display:block;font-family:var(--serif);font-size:clamp(1.35rem,2.2vw,1.7rem)!important;line-height:1.45!important;letter-spacing:-.01em!important;color:var(--ink);margin:10px 0 18px!important}
+.wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.wb-field{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.wb-card-plan .wb-field+.wb-field{margin-top:22px}
+.wb-grid+.wb-field{margin-top:20px}
+.wb-field label{font-size:.95rem;color:#5a464e}
+.wb-tag{align-self:flex-start;font-size:.7rem;letter-spacing:.14em;font-weight:700;color:#7e2644;background:#f8dbe3;border-radius:20px;padding:3px 12px}
+.wb-field-feature{margin-top:28px!important;padding:22px;background:var(--raspberry);border-radius:20px}
+.wb-field-feature label{color:#fffaf8;font-family:var(--serif);font-size:1.3rem}
+.wb-prayer{margin-top:22px;text-align:center;font-family:var(--serif);font-style:italic;font-size:1.2rem;color:#72535e}
+
+.wb-form textarea,.wb-form input[type=text],.wb-form input[type=email]{width:100%;font:inherit;font-size:1rem;line-height:1.7;color:var(--ink);background:#fffefd;border:1.5px solid #d8b97f;border-radius:16px;padding:14px 16px;resize:vertical;transition:border-color .25s,box-shadow .25s}
+.wb-form textarea{min-height:5.4em}
+.wb-form textarea:focus,.wb-form input:focus{outline:none;border-color:var(--raspberry);box-shadow:0 0 0 4px #f4d5e0}
+.wb-form [aria-invalid=true]{border-color:#b3261e}
+
+/* Send */
+.wb-send{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start;margin-top:96px;margin-bottom:100px;padding-top:70px;border-top:1px solid #e0cac2}
+.wb-send h2{font-size:clamp(2.3rem,3.6vw,3.2rem);line-height:1.16;letter-spacing:-.025em;margin-top:18px}
+.wb-send-copy>p:not(.eyebrow){color:var(--muted);margin-top:20px;max-width:460px}
+.wb-send-form{display:flex;flex-direction:column;gap:16px}
+.wb-optional{color:#8a7a80;font-size:.85rem}
+.wb-error{color:#b3261e;font-size:.85rem;min-height:0}
+.wb-error:empty{display:none}
+.wb-send-actions{display:flex;flex-wrap:wrap;align-items:center;gap:26px;margin-top:8px}
+.wb-send-actions .button{border:1px solid #d877974d;cursor:pointer}
+.wb-send-actions .button[disabled]{opacity:.6;cursor:progress}
+.wb-print{background:none;border:0;border-bottom:1px solid #b593a0;cursor:pointer;color:inherit}
+.wb-status{font-size:.95rem}
+.wb-status:empty{display:none}
+.wb-status.is-success{padding:16px 20px;border-radius:16px;background:#eef5ec;color:#2f5130;font-family:var(--serif);font-size:1.15rem}
+.wb-status.is-error{padding:14px 18px;border-radius:16px;background:#fbecec;color:#8c1d18}
+.wb-clear{align-self:flex-start;background:none;border:0;padding:4px 0;font-size:.8rem;color:#8a7a80;text-decoration:underline;cursor:pointer}
+.wb-clear:hover{color:var(--raspberry)}
+
+@media(max-width:1150px){.wb-lesson{gap:40px}.wb-hero{gap:40px}}
+@media(max-width:850px){
+  .wb-hero,.wb-lesson,.wb-send{grid-template-columns:1fr}
+  .wb-cover{justify-self:center;max-width:320px}
+  .wb-slide{position:static;max-width:620px}
+  .wb-lesson-pair .wb-lesson-copy+.wb-lesson-copy .eyebrow{display:none}
+  .wb-steps{grid-template-columns:1fr 1fr}
+  .wb-send{gap:34px}
+}
+@media(max-width:700px){
+  .wb-home-link{padding:9px 16px;font-size:.8rem}
+  .wb-hero{padding-top:10px;padding-bottom:50px}
+  .wb-chapter{padding-top:64px}
+  .wb-card{padding:26px 18px 24px;border-radius:22px;margin-top:32px}
+  .wb-grid,.wb-columns{grid-template-columns:1fr}
+  .wb-list-split{columns:1}
+  .wb-save-note{padding:16px 18px}
+  .wb-send{margin-bottom:70px}
+}
+@media(max-width:420px){.wb-steps{grid-template-columns:1fr}}
+
+@media print{
+  .wb-home-link,.wb-save-note,.wb-slide,.wb-send-copy,.wb-send-actions,.wb-clear,.wb-status,.wb-hero .hero-actions,.skip-link{display:none!important}
+  .wb-hero{grid-template-columns:1fr 200px;padding-bottom:20px}
+  .wb-lesson{grid-template-columns:1fr}
+  .wb-chapter{padding-top:28px}
+  .wb-card{background:white;border-color:#ccc;break-inside:avoid}
+  .wb-steps li{background:white;color:black;border:1px solid #ccc}.wb-steps strong{color:black}
+  .wb-form textarea,.wb-form input{border-color:#bbb;resize:none;overflow:visible}
+  .wb-send{margin:30px auto 0;padding-top:20px;grid-template-columns:1fr}
+  .wb-field-feature{background:white;border:1px solid #ccc}.wb-field-feature label{color:black}
+}

@@ -35,3 +35,9 @@ LATEST UPDATE
 The Take a breath section now features a shoreline sunrise image of a fresh
 beginning. Nashay’s digital business card has a larger, clearer contact panel.
 
+
+WORKBOOK (UNLISTED)
+The Surviving to Thriving workbook lives at /workbook/ (workbook/index.html).
+It is not linked from the main page and is marked noindex. Answers autosave
+in the visitor's browser and can be sent to Formspree (form xaeqolzd), printed,
+or the original fillable PDF downloaded (workbook/surviving-to-thriving-workbook.pdf).
