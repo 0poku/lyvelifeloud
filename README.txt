@@ -1,6 +1,6 @@
 LIVE LYFE LOUD — COMPLETE WEBSITE FILES
 
-Live website: https://live-lyfe-loud.kwasimd.chatgpt.site
+Staging website: https://0poku.github.io/
 
 This ZIP contains the finished website, including all photographs,
 artwork, the logo, styles, navigation script, and locally hosted fonts.
@@ -8,9 +8,9 @@ No build step, software installation, API key, or database is required.
 
 USING THESE FILES
 1. Extract the ZIP.
-2. Keep index.html, silk.css, script.js, and assets/ together.
-3. Upload those files and the assets/ folder into your domain's public
-   website directory. index.html should be at the top level of that directory.
+2. Keep index.html, silk.css, script.js, assets/, and workbook/ together.
+3. Upload those files and the assets/ and workbook/ folders into your domain's
+   public website directory. index.html should be at the top level of that directory.
    With cPanel this is usually public_html or the folder for your chosen domain.
 4. Open your domain in a browser. HTTPS can be enabled through your host.
 
